@@ -4,18 +4,14 @@ import {
   Pause,
   SkipBack,
   SkipForward,
-  Volume2,
   Music,
   Radio,
-  AlertCircle,
+  ChevronRight,
 } from "lucide-react";
 
-// ▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼
-// ★ 雲端音樂電台 - 9 大頻道 (最終完全體)
-// 包含：爵士、輕柔、電子、中文、韓語、巴薩諾瓦、水晶、鋼琴、史詩歌劇
-// ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲
+// --- 1. 音樂資料區 (全部 9 個類別) ---
 
-// --- 1. 爵士音樂 (Jazz) ---
+// 爵士
 const jazzSongs = Array.from({ length: 50 }, (_, i) => {
   const num = 254 + i;
   return {
@@ -24,7 +20,7 @@ const jazzSongs = Array.from({ length: 50 }, (_, i) => {
   };
 });
 
-// --- 2. 輕柔音樂 (Soft/Lo-fi) ---
+// 輕柔
 const softRanges = [
   { start: 587, end: 600, suffix: "Lo-fi.mp3" },
   { start: 16, end: 50, suffix: "Lo-fi.mp3" },
@@ -41,7 +37,7 @@ const softSongs = softRanges.flatMap((range) =>
   })
 );
 
-// --- 3. 電子音樂 (Electronic) ---
+// 電子
 const electronicSongs = [
   ...Array.from({ length: 5 }, (_, i) => ({
     url: `https://raw.githubusercontent.com/hafunnyman/my-radio/main/ELECTRONIC-RADIO/${
@@ -87,7 +83,7 @@ const electronicSongs = [
   })),
 ];
 
-// --- 4. 中文音樂 (Chinese) ---
+// 中文
 const chineseFilenames = [
   "09瘋狂的夢.mp3",
   "10臭臉貓.mp3",
@@ -282,15 +278,14 @@ const chineseFilenames = [
   "07壞婆婆.mp3",
   "08眼裡星光.mp3",
 ];
-
-const chineseSongs = chineseFilenames.map((filename) => ({
+const chineseSongs = chineseFilenames.map((f) => ({
   url: `https://raw.githubusercontent.com/hafunnyman/my-radio/main/CHINESE-RADIO/${encodeURIComponent(
-    filename
+    f
   )}`,
-  trackName: filename.replace(".mp3", ""),
+  trackName: f.replace(".mp3", ""),
 }));
 
-// --- 5. 韓語音樂 (K-Pop) ---
+// 韓語
 const koreanFilenames = [
   "550.WHO I AM.mp3",
   "551.너를 처음 본 순간.mp3",
@@ -328,35 +323,30 @@ const koreanFilenames = [
   "583.우린 인연이 아니었나 봐（我們大概不是命中注定吧）.mp3",
   "584.너의 하루는 나야 (你的每天都有我).mp3",
   "585.꼭 달고 나가 (Tag Along, Buddy!).mp3",
-  "586.몰래 응원해(默默為你加油).mp3",
+  "586.몰래 응員해(默默為你加油).mp3",
 ];
-
-const koreanSongs = koreanFilenames.map((filename) => ({
+const koreanSongs = koreanFilenames.map((f) => ({
   url: `https://raw.githubusercontent.com/hafunnyman/my-radio/main/KOREAN-RADIO/${encodeURIComponent(
-    filename
+    f
   )}`,
-  trackName: filename.replace(".mp3", ""),
+  trackName: f.replace(".mp3", ""),
 }));
 
-// --- 6. 巴薩諾瓦 (Bossa Nova) ---
+// 巴薩諾瓦
 const bossaSongs = [
   {
     url: `https://raw.githubusercontent.com/hafunnyman/my-radio/main/BOSSA-RADIO/Untitled%20(Extend)%20(Extend).mp3`,
     trackName: `Bossa Nova 1`,
   },
-  ...Array.from({ length: 91 }, (_, i) => {
-    const num = i + 1;
-    const filename = `Untitled (Extend) (Extend) (${num}).mp3`;
-    return {
-      url: `https://raw.githubusercontent.com/hafunnyman/my-radio/main/BOSSA-RADIO/${encodeURIComponent(
-        filename
-      )}`,
-      trackName: `Bossa Nova ${num + 1}`,
-    };
-  }),
+  ...Array.from({ length: 91 }, (_, i) => ({
+    url: `https://raw.githubusercontent.com/hafunnyman/my-radio/main/BOSSA-RADIO/${encodeURIComponent(
+      `Untitled (Extend) (Extend) (${i + 1}).mp3`
+    )}`,
+    trackName: `Bossa Nova ${i + 2}`,
+  })),
 ];
 
-// --- 7. 水晶音樂 (Crystal) ---
+// 水晶音樂
 const crystalSongs = [
   {
     url: `https://raw.githubusercontent.com/hafunnyman/my-radio/main/CRYSTAL-RADIO/Untitled.mp3`,
@@ -394,69 +384,57 @@ const crystalSongs = [
   })),
 ];
 
-// --- 8. 鋼琴音樂 (Piano) ---
+// 鋼琴音樂
 const pianoSongs = [
-  ...Array.from({ length: 71 - 8 + 1 }, (_, i) => {
-    const num = i + 8; // 從 8 開始
-    const filename = `Untitled (Extend) (Extend) (${num}).mp3`;
-    return {
-      url: `https://raw.githubusercontent.com/hafunnyman/my-radio/main/PIANO-RADIO/${encodeURIComponent(
-        filename
-      )}`,
-      trackName: `Piano Music ${num}`,
-    };
-  }),
+  ...Array.from({ length: 71 - 8 + 1 }, (_, i) => ({
+    url: `https://raw.githubusercontent.com/hafunnyman/my-radio/main/PIANO-RADIO/${encodeURIComponent(
+      `Untitled (Extend) (Extend) (${i + 8}).mp3`
+    )}`,
+    trackName: `Piano Music ${i + 8}`,
+  })),
   {
     url: `https://raw.githubusercontent.com/hafunnyman/my-radio/main/PIANO-RADIO/${encodeURIComponent(
       `Untitled (Extend) (Extend).mp3`
     )}`,
     trackName: `Piano Music 72`,
   },
-  ...Array.from({ length: 7 }, (_, i) => {
-    const num = i + 1;
-    const filename = `Untitled (Extend) (Extend) (${num}).mp3`;
-    return {
-      url: `https://raw.githubusercontent.com/hafunnyman/my-radio/main/PIANO-RADIO/${encodeURIComponent(
-        filename
-      )}`,
-      trackName: `Piano Music ${72 + num}`,
-    };
-  }),
+  ...Array.from({ length: 7 }, (_, i) => ({
+    url: `https://raw.githubusercontent.com/hafunnyman/my-radio/main/PIANO-RADIO/${encodeURIComponent(
+      `Untitled (Extend) (Extend) (${i + 1}).mp3`
+    )}`,
+    trackName: `Piano Music ${72 + i + 1}`,
+  })),
 ];
 
-// --- 9. 史詩歌劇 (Epic Opera) ---
-// 根據清單：485-549 共 65 首
-const epicSongs = Array.from({ length: 549 - 485 + 1 }, (_, i) => {
-  const num = 485 + i;
-  return {
-    url: `https://raw.githubusercontent.com/hafunnyman/my-radio/main/EPIC-RADIO/${encodeURIComponent(
-      `${num}.歌劇.mp3`
-    )}`,
-    trackName: `Epic Opera ${num}`,
-  };
-});
+// 史詩歌劇
+const epicSongs = Array.from({ length: 549 - 485 + 1 }, (_, i) => ({
+  url: `https://raw.githubusercontent.com/hafunnyman/my-radio/main/EPIC-RADIO/${encodeURIComponent(
+    `${485 + i}.歌劇.mp3`
+  )}`,
+  trackName: `Epic Opera ${485 + i}`,
+}));
 
-// --- 頻道總表 ---
+// 彙整類別
 const categories = [
   {
     id: "jazz",
     title: "爵士音樂",
     cover: "https://placehold.co/400x400/2a2a2a/FFF?text=Jazz+Radio",
-    description: "放鬆心情的經典爵士選曲",
+    description: "經典爵士選曲",
     songs: jazzSongs,
   },
   {
     id: "soft",
     title: "輕柔音樂",
     cover: "https://placehold.co/400x400/4a7a6a/FFF?text=Soft+Music",
-    description: "舒緩身心的 Lo-fi 輕音樂",
+    description: "Lo-fi 輕音樂",
     songs: softSongs,
   },
   {
     id: "electronic",
     title: "電子音樂",
     cover: "https://placehold.co/400x400/2a2a7a/FFF?text=Electronic",
-    description: "充滿活力的電子節奏",
+    description: "活力的電子節奏",
     songs: electronicSongs,
   },
   {
@@ -477,93 +455,119 @@ const categories = [
     id: "bossa",
     title: "巴薩諾瓦",
     cover: "https://placehold.co/400x400/c0a060/FFF?text=Bossa+Nova",
-    description: "慵懶午後的 Bossa Nova",
+    description: "慵懶的 Bossa Nova",
     songs: bossaSongs,
   },
   {
     id: "crystal",
     title: "水晶音樂",
     cover: "https://placehold.co/400x400/a0d0e0/FFF?text=Crystal",
-    description: "清澈療癒的水晶音樂",
+    description: "療癒的水晶音樂",
     songs: crystalSongs,
   },
   {
     id: "piano",
     title: "鋼琴音樂",
     cover: "https://placehold.co/400x400/303030/FFF?text=Piano",
-    description: "優美動人的鋼琴旋律",
+    description: "優美的鋼琴旋律",
     songs: pianoSongs,
   },
   {
     id: "epic",
     title: "史詩歌劇",
     cover: "https://placehold.co/400x400/8a2a2a/FFF?text=Epic+Opera",
-    description: "氣勢磅礡的史詩與歌劇",
+    description: "氣勢磅礡的歌劇",
     songs: epicSongs,
   },
 ];
 
+// --- 2. 主程式 (含遙控器優化) ---
+
 export default function App() {
   const [currentCategoryIndex, setCurrentCategoryIndex] = useState(0);
   const [currentSongIndex, setCurrentSongIndex] = useState(0);
-
   const [isPlaying, setIsPlaying] = useState(false);
-  const [volume, setVolume] = useState(0.5);
   const [progress, setProgress] = useState(0);
-  const [errorMsg, setErrorMsg] = useState("");
+  const [focusedIndex, setFocusedIndex] = useState(0); // 遙控器焦點
 
   const audioRef = useRef(null);
+  const channelRefs = useRef([]);
 
   const currentCategory = categories[currentCategoryIndex];
   const currentSong = currentCategory.songs[currentSongIndex];
+
+  // 遙控器監聽
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      switch (e.key) {
+        case "ArrowUp":
+          e.preventDefault();
+          setFocusedIndex((prev) =>
+            prev > 0 ? prev - 1 : categories.length - 1
+          );
+          break;
+        case "ArrowDown":
+          e.preventDefault();
+          setFocusedIndex((prev) =>
+            prev < categories.length - 1 ? prev + 1 : 0
+          );
+          break;
+        case "Enter":
+        case " ":
+          e.preventDefault();
+          handleCategorySelect(focusedIndex);
+          break;
+        case "ArrowLeft":
+          prevSong();
+          break;
+        case "ArrowRight":
+          nextSong();
+          break;
+        default:
+          break;
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [focusedIndex, currentCategoryIndex]);
+
+  // 自動捲動清單
+  useEffect(() => {
+    if (channelRefs.current[focusedIndex]) {
+      channelRefs.current[focusedIndex].scrollIntoView({
+        behavior: "smooth",
+        block: "nearest",
+      });
+    }
+  }, [focusedIndex]);
 
   const handleCategorySelect = (index) => {
     if (index !== currentCategoryIndex) {
       setCurrentCategoryIndex(index);
       setCurrentSongIndex(0);
       setIsPlaying(true);
-      setErrorMsg("");
     } else {
       togglePlay();
     }
   };
-
-  useEffect(() => {
-    setErrorMsg("");
-  }, [currentCategoryIndex, currentSongIndex]);
-
-  useEffect(() => {
-    if (isPlaying && audioRef.current) {
-      const playPromise = audioRef.current.play();
-      if (playPromise !== undefined) {
-        playPromise.catch((error) => {
-          if (error.name !== "AbortError") {
-            console.log("Autoplay prevented or interrupted");
-          }
-        });
-      }
-    }
-  }, [currentSongIndex, currentCategoryIndex, isPlaying]);
 
   const togglePlay = () => {
     if (isPlaying) {
       audioRef.current.pause();
       setIsPlaying(false);
     } else {
+      audioRef.current.play();
       setIsPlaying(true);
     }
   };
 
-  const nextSong = () => {
+  const nextSong = () =>
     setCurrentSongIndex((prev) => (prev + 1) % currentCategory.songs.length);
-  };
-
-  const prevSong = () => {
+  const prevSong = () =>
     setCurrentSongIndex(
       (prev) =>
         (prev - 1 + currentCategory.songs.length) % currentCategory.songs.length
     );
-  };
 
   const handleTimeUpdate = () => {
     const current = audioRef.current.currentTime;
@@ -571,80 +575,68 @@ export default function App() {
     if (duration) setProgress((current / duration) * 100);
   };
 
-  const handleError = () => {
-    console.error("Playback error url:", currentSong.url);
-    if (isPlaying) {
-      setTimeout(() => nextSong(), 1000);
-    }
-    setErrorMsg(`無法播放 ${currentSong.trackName}，正在嘗試下一首...`);
-  };
-
-  const handleVolumeChange = (e) => {
-    const vol = parseFloat(e.target.value);
-    setVolume(vol);
-    if (audioRef.current) audioRef.current.volume = vol;
-  };
-
-  const handleProgressClick = (e) => {
-    const width = e.target.clientWidth;
-    const clickX = e.nativeEvent.offsetX;
-    const duration = audioRef.current.duration;
-    if (audioRef.current && duration) {
-      audioRef.current.currentTime = (clickX / width) * duration;
-    }
-  };
-
   return (
     <div style={styles.mainContainer}>
       {/* 左側：頻道列表 */}
       <div style={styles.sidebar}>
         <div style={styles.logoArea}>
-          <Radio size={24} color="#4ade80" />
+          <Radio size={28} color="#4ade80" />
           <h2 style={styles.logoText}>Cloud Radio</h2>
         </div>
-
-        <div style={styles.playlistHeader}>頻道列表 (CHANNELS)</div>
-
+        <div style={styles.playlistHeader}>遙控器：上下切換 / OK播放</div>
         <div style={styles.scrollableList}>
           {categories.map((cat, index) => (
             <div
               key={cat.id}
-              onClick={() => handleCategorySelect(index)}
+              ref={(el) => (channelRefs.current[index] = el)}
+              onClick={() => {
+                setFocusedIndex(index);
+                handleCategorySelect(index);
+              }}
               style={{
                 ...styles.channelItem,
                 backgroundColor:
-                  index === currentCategoryIndex
-                    ? "rgba(74, 222, 128, 0.15)"
+                  index === focusedIndex
+                    ? "rgba(74, 222, 128, 0.25)"
                     : "transparent",
                 borderLeft:
-                  index === currentCategoryIndex
-                    ? "4px solid #4ade80"
-                    : "4px solid transparent",
-                opacity:
-                  index !== currentCategoryIndex &&
-                  index > 0 &&
-                  cat.songs.length <= 2
-                    ? 0.6
-                    : 1,
+                  index === focusedIndex
+                    ? "6px solid #4ade80"
+                    : "6px solid transparent",
+                transform: index === focusedIndex ? "scale(1.02)" : "scale(1)",
+                boxShadow:
+                  index === focusedIndex
+                    ? "0 0 15px rgba(74, 222, 128, 0.3)"
+                    : "none",
               }}
             >
-              {index === currentCategoryIndex && isPlaying ? (
-                <Music size={18} color="#4ade80" style={{ marginRight: 12 }} />
-              ) : (
-                <div style={styles.channelIndex}>{index + 1}</div>
-              )}
-
+              <div
+                style={{
+                  ...styles.channelIndex,
+                  color: index === focusedIndex ? "#4ade80" : "#555",
+                }}
+              >
+                {index === currentCategoryIndex && isPlaying ? (
+                  <Music size={20} className="pulse" />
+                ) : (
+                  index + 1
+                )}
+              </div>
               <div style={styles.channelInfo}>
                 <div
                   style={{
                     ...styles.channelTitle,
-                    color: index === currentCategoryIndex ? "#4ade80" : "#fff",
+                    color: index === focusedIndex ? "#fff" : "#aaa",
+                    fontWeight: index === focusedIndex ? "bold" : "normal",
                   }}
                 >
                   {cat.title}
                 </div>
                 <div style={styles.channelDesc}>{cat.description}</div>
               </div>
+              {index === focusedIndex && (
+                <ChevronRight size={20} color="#4ade80" />
+              )}
             </div>
           ))}
         </div>
@@ -653,19 +645,14 @@ export default function App() {
       {/* 右側：主播放區 */}
       <div style={styles.playerArea}>
         <div style={styles.playerContent}>
-          {errorMsg && (
-            <div style={styles.errorBanner}>
-              <AlertCircle size={20} />
-              <span>{errorMsg}</span>
-            </div>
-          )}
-
-          {/* 唱片封面 */}
           <div style={styles.cdContainer}>
             <div
               style={{
                 ...styles.cdWrapper,
                 animation: isPlaying ? "spin 12s linear infinite" : "none",
+                boxShadow: isPlaying
+                  ? "0 0 60px rgba(74, 222, 128, 0.2)"
+                  : "0 20px 50px rgba(0,0,0,0.5)",
               }}
             >
               <img
@@ -676,68 +663,49 @@ export default function App() {
               <div style={styles.cdHole}></div>
             </div>
           </div>
-
-          {/* 顯示資訊：只顯示頻道名稱 */}
           <div style={styles.infoSection}>
             <h1 style={styles.bigTitle}>{currentCategory.title}</h1>
+            <p style={styles.songCount}>
+              共 {currentCategory.songs.length} 首曲目
+            </p>
           </div>
-
-          {/* 進度條 */}
+          <div style={styles.controlsSection}>
+            <button style={styles.iconBtn} onClick={prevSong}>
+              <SkipBack size={48} />
+            </button>
+            <button style={styles.playBtn} onClick={togglePlay}>
+              {isPlaying ? (
+                <Pause size={50} fill="black" />
+              ) : (
+                <Play size={50} fill="black" style={{ marginLeft: 6 }} />
+              )}
+            </button>
+            <button style={styles.iconBtn} onClick={nextSong}>
+              <SkipForward size={48} />
+            </button>
+          </div>
           <div style={styles.progressSection}>
-            <div style={styles.progressBg} onClick={handleProgressClick}>
+            <div style={styles.progressBg}>
               <div
                 style={{ ...styles.progressFill, width: `${progress}%` }}
               ></div>
             </div>
           </div>
-
-          {/* 控制按鈕 */}
-          <div style={styles.controlsSection}>
-            <button style={styles.iconBtn} onClick={prevSong} title="上一首">
-              <SkipBack size={32} />
-            </button>
-            <button style={styles.playBtn} onClick={togglePlay}>
-              {isPlaying ? (
-                <Pause size={40} fill="black" />
-              ) : (
-                <Play size={40} fill="black" style={{ marginLeft: 4 }} />
-              )}
-            </button>
-            <button style={styles.iconBtn} onClick={nextSong} title="下一首">
-              <SkipForward size={32} />
-            </button>
-          </div>
-
-          {/* 音量 */}
-          <div style={styles.volumeSection}>
-            <Volume2 size={20} color="#888" />
-            <input
-              type="range"
-              min="0"
-              max="1"
-              step="0.01"
-              value={volume}
-              onChange={handleVolumeChange}
-              style={styles.volumeSlider}
-            />
-          </div>
         </div>
       </div>
-
       <audio
         ref={audioRef}
         src={currentSong.url}
         onTimeUpdate={handleTimeUpdate}
         onEnded={nextSong}
-        onError={handleError}
+        autoPlay={isPlaying}
         crossOrigin="anonymous"
       />
       <style>{`
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #1a1a1a; }
-        ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #555; }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
+        .pulse { animation: pulse 1s infinite; }
+        ::-webkit-scrollbar { width: 0px; }
       `}</style>
     </div>
   );
@@ -748,99 +716,72 @@ const styles = {
     display: "flex",
     width: "100%",
     height: "100vh",
-    background: "#121212",
+    background: "#000",
     color: "#fff",
     fontFamily: "sans-serif",
     overflow: "hidden",
   },
   sidebar: {
-    width: "300px",
-    backgroundColor: "#000",
-    borderRight: "1px solid #333",
+    width: "350px",
+    backgroundColor: "#111",
+    borderRight: "1px solid #222",
     display: "flex",
     flexDirection: "column",
-    flexShrink: 0,
   },
   logoArea: {
-    padding: "20px",
+    padding: "30px 20px",
     display: "flex",
     alignItems: "center",
-    gap: "10px",
-    borderBottom: "1px solid #333",
+    gap: "15px",
+    background: "linear-gradient(to bottom, #1a1a1a, #111)",
   },
-  logoText: { margin: 0, fontSize: "20px", color: "#fff", fontWeight: "bold" },
+  logoText: { margin: 0, fontSize: "24px", color: "#fff" },
   playlistHeader: {
-    padding: "15px 20px",
-    fontSize: "12px",
-    color: "#888",
-    textTransform: "uppercase",
-    letterSpacing: "1px",
+    padding: "10px 20px",
+    fontSize: "14px",
+    color: "#4ade80",
+    backgroundColor: "#000",
+    borderBottom: "1px solid #222",
   },
-  scrollableList: {
-    flex: 1,
-    overflowY: "auto",
-  },
+  scrollableList: { flex: 1, overflowY: "auto", padding: "10px 0" },
   channelItem: {
-    padding: "16px 20px",
+    padding: "20px 25px",
     display: "flex",
     alignItems: "center",
     cursor: "pointer",
-    transition: "background 0.2s",
+    transition: "all 0.2s ease",
     borderBottom: "1px solid #1a1a1a",
+    margin: "5px 10px",
+    borderRadius: "10px",
   },
   channelIndex: {
-    width: "25px",
-    color: "#555",
-    fontSize: "14px",
+    width: "40px",
+    fontSize: "18px",
     fontWeight: "bold",
+    display: "flex",
+    justifyContent: "center",
   },
-  channelInfo: { flex: 1, overflow: "hidden" },
-  channelTitle: { fontSize: "16px", marginBottom: "4px", fontWeight: "500" },
-  channelDesc: {
-    fontSize: "12px",
-    color: "#666",
-    whiteSpace: "nowrap",
-    overflow: "hidden",
-    textOverflow: "ellipsis",
-  },
+  channelInfo: { flex: 1, marginLeft: "10px" },
+  channelTitle: { fontSize: "20px", marginBottom: "4px" },
+  channelDesc: { fontSize: "14px", color: "#555" },
   playerArea: {
     flex: 1,
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    background: "linear-gradient(to bottom right, #1e1e2e, #000)",
+    background: "radial-gradient(circle at center, #1a1a2e 0%, #000 100%)",
   },
-  playerContent: {
-    width: "400px",
-    textAlign: "center",
-    position: "relative",
-  },
-  errorBanner: {
-    position: "absolute",
-    top: "-60px",
-    left: "0",
-    right: "0",
-    background: "#ff4d4d",
-    color: "#fff",
-    padding: "10px",
-    borderRadius: "8px",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: "8px",
-    fontSize: "14px",
-  },
+  playerContent: { width: "500px", textAlign: "center" },
   cdContainer: {
-    marginBottom: "40px",
+    marginBottom: "50px",
     display: "flex",
     justifyContent: "center",
   },
   cdWrapper: {
-    width: "280px",
-    height: "280px",
+    width: "320px",
+    height: "320px",
     borderRadius: "50%",
-    boxShadow: "0 20px 50px rgba(0,0,0,0.5)",
-    border: "8px solid #222",
+    border: "12px solid #222",
     position: "relative",
     overflow: "hidden",
   },
@@ -850,74 +791,46 @@ const styles = {
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
-    width: "50px",
-    height: "50px",
-    background: "#121212",
+    width: "60px",
+    height: "60px",
+    background: "#000",
     borderRadius: "50%",
-    border: "4px solid #333",
+    border: "6px solid #333",
   },
-  infoSection: { marginBottom: "30px" },
-  bigTitle: {
-    fontSize: "28px",
-    margin: "0 0 10px 0",
-    fontWeight: "bold",
-    color: "#fff",
-  },
-  progressSection: { marginBottom: "30px", padding: "0 10px" },
-  progressBg: {
-    width: "100%",
-    height: "6px",
-    background: "#333",
-    borderRadius: "3px",
-    cursor: "pointer",
-    overflow: "hidden",
-  },
-  progressFill: {
-    height: "100%",
-    background: "#4ade80",
-    transition: "width 0.1s linear",
-  },
+  infoSection: { marginBottom: "40px" },
+  bigTitle: { fontSize: "42px", margin: "0" },
+  songCount: { color: "#555", fontSize: "18px" },
   controlsSection: {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    gap: "40px",
-    marginBottom: "30px",
+    gap: "50px",
+    marginBottom: "40px",
   },
   iconBtn: {
     background: "none",
     border: "none",
-    color: "#ccc",
+    color: "#555",
     cursor: "pointer",
-    transition: "color 0.2s",
-    display: "flex",
-    alignItems: "center",
   },
   playBtn: {
-    width: "70px",
-    height: "70px",
+    width: "100px",
+    height: "100px",
     borderRadius: "50%",
     background: "#4ade80",
     border: "none",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    cursor: "pointer",
-    boxShadow: "0 0 20px rgba(74, 222, 128, 0.4)",
-    transition: "transform 0.1s",
+    boxShadow: "0 0 30px rgba(74, 222, 128, 0.4)",
   },
-  volumeSection: {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    gap: "15px",
-    width: "60%",
-    margin: "0 auto",
+  progressSection: { padding: "0 50px" },
+  progressBg: {
+    width: "100%",
+    height: "8px",
+    background: "#222",
+    borderRadius: "4px",
+    overflow: "hidden",
   },
-  volumeSlider: {
-    flex: 1,
-    height: "4px",
-    accentColor: "#4ade80",
-    cursor: "pointer",
-  },
+  progressFill: { height: "100%", background: "#4ade80" },
 };
